@@ -1,0 +1,18 @@
+#!name=Locket-Gold_by-Khanhslee
+#!desc=Locket Gold Activation - By KhanhLN (Khanhslee) | V2.0.0
+#!url=https://raw.githubusercontent.com/Khanhslee/sgmodule/refs/heads/main/Locket_by-Khanhslee.sgmodule
+
+[Script]
+# ═══════════════════════════════════════════════
+# Locket Gold - By Khanhslee
+# Egern transfer to Shadowrocket & Surge & LanceX
+# ═══════════════════════════════════════════════
+
+# Response handler: Inject Gold subscription data vào response của RevenueCat
+locket_gold = type=http-response, pattern=^https:\/\/api\.revenuecat\.com\/.+\/(receipts$|subscribers\/[^/]+$), script-path=https://raw.githubusercontent.com/Khanhslee/sgmodule/refs/heads/main/Locket_main.js, requires-body=true, max-size=-1, timeout=60
+
+# Request handler: Xóa ETag header để buộc server trả full response (tránh 304 cache)
+locket_header = type=http-request, pattern=^https:\/\/api\.revenuecat\.com\/.+\/(receipts|subscribers), script-path=https://raw.githubusercontent.com/Khanhslee/sgmodule/refs/heads/main/deleteHeader.js, timeout=60
+
+[MITM]
+hostname = %APPEND% api.revenuecat.com
