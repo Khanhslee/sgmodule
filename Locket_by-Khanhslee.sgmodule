@@ -1,5 +1,5 @@
 #!name=Locket-Gold_by-Khanhslee
-#!desc=Locket Gold Activation - By KhanhLN (Khanhslee) | V2.0.0
+#!desc=Locket Gold Full Activation (60s Video + All Features) - By KhanhLN (Khanhslee) | V2.1.0
 #!url=https://raw.githubusercontent.com/Khanhslee/sgmodule/refs/heads/main/Locket_by-Khanhslee.sgmodule
 
 [Script]
@@ -8,11 +8,14 @@
 # Egern transfer to Shadowrocket & Surge & LanceX
 # ═══════════════════════════════════════════════
 
-# Response handler: Inject Gold subscription data vào response của RevenueCat
+# [1] RevenueCat Response: Inject Gold subscription + entitlements
 locket_gold = type=http-response, pattern=^https:\/\/api\.revenuecat\.com\/.+\/(receipts$|subscribers\/[^/]+$), script-path=https://raw.githubusercontent.com/Khanhslee/sgmodule/refs/heads/main/locketfix.js, requires-body=true, max-size=-1, timeout=60
 
-# Request handler: Xóa ETag header để buộc server trả full response (tránh 304 cache)
+# [2] RevenueCat Request: Xóa ETag để buộc server trả full response
 locket_header = type=http-request, pattern=^https:\/\/api\.revenuecat\.com\/.+\/(receipts|subscribers), script-path=https://raw.githubusercontent.com/Khanhslee/sgmodule/refs/heads/main/locketheader.js, timeout=60
 
+# [3] Firebase Remote Config: Inject feature_gates + video 60s + all Gold features
+locket_features = type=http-response, pattern=^https:\/\/firebaseremoteconfig\.googleapis\.com\/.+, script-path=https://raw.githubusercontent.com/Khanhslee/sgmodule/refs/heads/main/forceGold4.2.js, requires-body=true, max-size=-1, timeout=60
+
 [MITM]
-hostname = %APPEND% api.revenuecat.com
+hostname = %APPEND% api.revenuecat.com, firebaseremoteconfig.googleapis.com
